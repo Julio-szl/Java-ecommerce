@@ -45,7 +45,9 @@ public class ProductoController {
 
     @PostMapping("/save")
     public String save(Producto producto, @RequestParam("img") MultipartFile file) throws IOException {
+
         LOGGER.info("Este es el objeto producto {} ", producto);
+        
         Usuario u = new Usuario(1, "", "", "", "", "", "", "");
         producto.setUsuario(u);
 
@@ -66,7 +68,7 @@ public class ProductoController {
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable Integer id, Model model) {
 
-        Producto producto = new Producto();
+        Producto producto;
         Optional<Producto> optionalProducto = productoService.get(id);
         producto = optionalProducto.get();
 
@@ -79,7 +81,7 @@ public class ProductoController {
     @PostMapping("/update")
     public String update(Producto producto, @RequestParam("img") MultipartFile file) throws IOException {
 
-        Producto p = new Producto();
+        Producto p;
         p = productoService.get(producto.getId()).get();
 
         if (file.isEmpty()) { // cuando se edita el producto pero no se cambia la imagen
@@ -102,7 +104,7 @@ public class ProductoController {
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Integer id) {
 
-        Producto p = new Producto();
+        Producto p;
         p = productoService.get(id).get();
         // eliminar cuando no sea la imagen por defecto
         if (!p.getImagen().equals("default.jpg")) {
