@@ -1,5 +1,7 @@
 package com.proyecto.ecommerce.spring_ecommerce.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -11,7 +13,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.proyecto.ecommerce.spring_ecommerce.model.DetalleOrden;
+import com.proyecto.ecommerce.spring_ecommerce.model.Orden;
 import com.proyecto.ecommerce.spring_ecommerce.model.Producto;
 import com.proyecto.ecommerce.spring_ecommerce.service.ProductoService;
 
@@ -24,6 +29,12 @@ public class HomeController {
     @Autowired
     private ProductoService productoService;
 
+    //Para almacenar los detalles de la orden
+    List<DetalleOrden> detalles = new ArrayList<DetalleOrden>();
+
+    //Datos de la orden del usuario
+    Orden orden = new Orden();
+
     @GetMapping()
     public String home(Model model){
         
@@ -34,7 +45,7 @@ public class HomeController {
     @GetMapping("/productohome/{id}")
     public String productoHome(@PathVariable Integer id, Model model){
         log.info("ID producto enviado como parametro {} ", id);
-        Producto producto = new Producto();
+        Producto producto;
         Optional<Producto> productoOptional = productoService.get(id);
         producto = productoOptional.get();
 
@@ -43,7 +54,16 @@ public class HomeController {
     }
 
     @PostMapping("/cart")
-    public String addCart(){
+    public String addCart(@RequestParam Integer id, @RequestParam Integer cantidad){
+
+        DetalleOrden detalleOrden = new DetalleOrden();
+        Producto producto = new Producto();
+        Double sumaTotal = 0.0;
+
+        Optional<Producto> optionalProducto = productoService.get(id);
+        log.info("Producto añadido: {}", optionalProducto.get());
+        log.info("Cantidad: {}", cantidad);
+
         return "usuario/carrito";
     }
 }
