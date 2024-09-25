@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,7 @@ import com.proyecto.ecommerce.spring_ecommerce.service.IDetalleOrdenService;
 import com.proyecto.ecommerce.spring_ecommerce.service.IOrdenService;
 import com.proyecto.ecommerce.spring_ecommerce.service.IUsuarioService;
 import com.proyecto.ecommerce.spring_ecommerce.service.ProductoService;
+
 
 @Controller
 @RequestMapping("/")
@@ -171,4 +173,16 @@ public class HomeController {
 
         return "redirect::/";
     }
+
+    @PostMapping("/search")
+    public String searchProduct(@RequestParam String nombre, Model model) {
+        
+        log.info("Nombre del producto: {}", nombre);
+
+        List<Producto> productos = productoService.findAll().stream()
+            .filter(n -> n.getNombre().toUpperCase().contains(nombre.toUpperCase())).collect(Collectors.toList());
+        model.addAttribute("productos", productos);
+        return "usuario/home";
+    }
+    
 }
