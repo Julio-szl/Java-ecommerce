@@ -5,7 +5,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -20,7 +19,7 @@ public class DetalleOrden {
     private double precio;
     private double total;
 
-    @OneToOne
+    @ManyToOne
     private Orden orden;
 
     @ManyToOne
@@ -77,14 +76,14 @@ public class DetalleOrden {
     public void setTotal(double total) {
         this.total = total;
     }
-    
+
     public Orden getOrden() {
         return orden;
     }
 
     public void setOrden(Orden orden) {
         this.orden = orden;
-    }
+    } 
 
     public Producto getProducto() {
         return producto;
@@ -97,6 +96,7 @@ public class DetalleOrden {
     @Override
     public String toString() {
         return "DetalleOrden [id=" + id + ", nombre=" + nombre + ", cantidad=" + cantidad + ", precio=" + precio
-                + ", total=" + total + "]";
-    } 
+                + ", total=" + total + ", orden=" + orden + ", producto=" + producto + "]";
+    }
+
 }
