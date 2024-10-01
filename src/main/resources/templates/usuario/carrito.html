@@ -21,7 +21,8 @@
 <body>
 
   <!-- Navigation -->
-  <div th:insert="~{usuario/template_usuario.html::header}"></div>
+  <div th:insert="~{usuario/template_usuario.html::header}" th:if="${session == null}"></div>
+  <div th:insert="~{usuario/template_usuario.html::header_user}" th:unless="${session == null}"></div>
 
   <!-- Page Content -->
   <div class="container">
