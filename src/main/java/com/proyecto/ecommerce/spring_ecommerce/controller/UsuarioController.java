@@ -18,7 +18,9 @@ import com.proyecto.ecommerce.spring_ecommerce.service.IUsuarioService;
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
 
 
 @Controller
@@ -55,16 +57,16 @@ public class UsuarioController {
 
     @PostMapping("/acceder")
     public String acceder(Usuario usuario, HttpSession session) {
-
+        
         logger.info("Accesos : {}", usuario);
-
+        
         Optional<Usuario> user = usuarioService.findByEmail(usuario.getEmail());
         // logger.info("Usuario de DB: {}", user.get());
-
+        
         if (user.isPresent()) {
-
+            
             session.setAttribute("idusuario", user.get().getId());
-
+            
             if (user.get().getTipo().equals("ADMIN")) {
                 return "redirect:/administrador";
             } else {
@@ -74,7 +76,6 @@ public class UsuarioController {
         } else {
             logger.info("Usuario no existe");
         }
-
         return "redirect:/";
     }
 
@@ -87,6 +88,18 @@ public class UsuarioController {
 
         model.addAttribute("ordenes", ordenes);
         return "usuario/compras";
+    }
+    
+    @GetMapping("/detalle/{id}")
+    public String detalleCompra(@PathVariable Integer id, HttpSession session, Model model) {
+        logger.info("ID de la orden: {}", id);
+
+        Optional<Orden> orden = ordenService.findById(id);
+        model.addAttribute("detalles", orden.get().getDetalle());
+        
+        // Session
+        model.addAttribute("session", session.getAttribute("idusuario"));
+        return "usuario/detallecompra";
     }
     
 }

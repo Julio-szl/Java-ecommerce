@@ -118,4 +118,5 @@ public class ProductoController {
         productoService.delete(id);
         return "redirect:/productos";
     }
+
 }

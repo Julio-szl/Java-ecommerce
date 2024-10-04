@@ -68,7 +68,7 @@ public class HomeController {
     @GetMapping("/productohome/{id}")
     public String productoHome(@PathVariable Integer id, Model model) {
         log.info("ID producto enviado como parametro {} ", id);
-        Producto producto;
+        Producto producto = new Producto();
         Optional<Producto> productoOptional = productoService.get(id);
         producto = productoOptional.get();
 
@@ -193,5 +193,7 @@ public class HomeController {
         model.addAttribute("productos", productos);
         return "usuario/home";
     }
+
+    
     
 }
