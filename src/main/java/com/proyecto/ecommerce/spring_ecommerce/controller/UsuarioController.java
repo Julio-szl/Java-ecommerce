@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 
 
+
 @Controller
 @RequestMapping("/usuario")
 public class UsuarioController {
@@ -100,6 +101,12 @@ public class UsuarioController {
         // Session
         model.addAttribute("session", session.getAttribute("idusuario"));
         return "usuario/detallecompra";
+    }
+    
+    @GetMapping("/cerrar")
+    public String cerrarSesion(HttpSession session) {
+        session.removeAttribute("idusuario");
+        return "redirect:/";
     }
     
 }
